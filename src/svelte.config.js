@@ -7,12 +7,12 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: '404.html', // Wichtig für SPA-Routing auf GitHub Pages
-			precompress: false,
-			strict: true
-		}),
+    pages: 'build',
+    assets: 'build',
+    fallback: '404.html', // Das hier ist der Schlüssel!
+    precompress: false,
+    strict: true
+})
 		// NEU: Das verhindert, dass der Build bei dynamischen API-Routen abbricht
 		prerender: {
 			handleUnseenRoutes: 'ignore'
