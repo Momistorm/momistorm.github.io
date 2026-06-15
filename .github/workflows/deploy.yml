@@ -23,36 +23,35 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
+    # NEU: Das zwingt ALLE folgenden 'run'-Schritte, im Unterordner zu starten
+    defaults:
+      run:
+        working-directory: ./src
+
     steps:
-      # 1. Code aus dem Repository auschecken
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-     # 2. Node.js installieren (Tippfehler bei node-version korrigiert und Cache entfernt)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 3. Projektabhängigkeiten installieren (von npm ci auf npm install umgestellt)
       - name: Install dependencies
         run: npm install
 
-      # 4. SvelteKit statisch bauen (erzeugt den 'build' oder '.svelte-kit' Ordner)
       - name: Build Project
         run: npm run build
 
-      # 5. GitHub Pages Infrastruktur im Hintergrund vorbereiten
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # 6. Den gebauten Ordner als Artefakt hochladen (SvelteKit Static nutzt meistens 'build')
+      # HIER AUCH WICHTIG: Pfad zum gebauten Ordner anpassen!
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'build'
+          path: './src/build' # Pfad wurde um './src/' erweitert
 
-      # 7. Das Artefakt live ins Web stellen
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
